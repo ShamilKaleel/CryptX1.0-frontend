@@ -7,6 +7,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 // Schema validation using Zod
 const schema = z.object({
@@ -29,6 +31,9 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function SignupPage() {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   // Initialize React Hook Form with Zod resolver and default values
   const {
     register,
@@ -49,18 +54,17 @@ export default function SignupPage() {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       // Send a POST request to the signup API endpoint
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/signup",
-        {
-          username: data.username,
-          email: data.email,
+      await axios.post("http://localhost:8080/api/auth/signup", {
+        username: data.username,
+        email: data.email,
 
-          password: data.password,
-        }
-      );
-
-      console.log(response.data);
-      alert("Signup successful! Please login.");
+        password: data.password,
+      });
+      navigate("/login");
+      toast({
+        title: "Signup Successful!",
+        description: "Please login.",
+      });
     } catch (error: any) {
       // Handle API error response
       setError("root", {
@@ -72,7 +76,7 @@ export default function SignupPage() {
 
   return (
     <div className="flex justify-center h-screen w-full items-center">
-      <Card className="px-8 py-16">
+      <div className="px-8 py-16">
         <h1 className="text-2xl font-bold text-center mb-5">Signup</h1>
 
         {/* Form for username, email, role, and password input */}
@@ -143,12 +147,12 @@ export default function SignupPage() {
               </Link>
             </p>
 
-            <p className=" text-red-500 pl-1 text-center absolute top-32">
+            <p className=" text-center text-red-500  pl-1 absolute top-32 left-0 right-0">
               {errors.root?.message}
             </p>
           </div>
         </form>
-      </Card>
+      </div>
     </div>
   );
 }

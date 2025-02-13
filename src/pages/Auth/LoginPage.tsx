@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Lorder from "@/components/Lorder";
@@ -132,6 +131,12 @@ export default function LoginForm() {
                 {/* Show loader or text */}
               </Button>
               {/* Display form-level error message */}
+              <p className="text-center block mt-5">
+                Don't have an account? Sign up{" "}
+                <Link to="/signup" className=" underline text-gray-500">
+                  Sign up
+                </Link>
+              </p>
 
               <p className=" text-center text-red-500  pl-1 absolute top-32 left-0 right-0">
                 {errors.root?.message}

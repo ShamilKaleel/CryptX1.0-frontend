@@ -46,10 +46,9 @@ export default function App() {
         <Route
           path="/"
           element={
-            // <ProtectedRoute>
-            //   <Layout />
-            // </ProtectedRoute>
-            <Layout />
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
           }
         >
           <Route index element={<DashboardPage />} />
