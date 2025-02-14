@@ -65,7 +65,7 @@ export default function LoginForm() {
         >
           <img src={Logo} className="h-10 w-10" />
 
-          <span className="text-2xl font-bold ">DN Dental</span>
+          <span className="text-2xl font-bold ">AgriConnect</span>
         </Link>
         <div className="px-8 py-16">
           <h1 className="text-2xl font-bold text-center mb-3">
@@ -130,14 +130,13 @@ export default function LoginForm() {
                 {isSubmitting ? <Lorder /> : "Submit"}{" "}
                 {/* Show loader or text */}
               </Button>
-              {/* Display form-level error message */}
+              {/* Display form-level error message */}q
               <p className="text-center block mt-5">
-                Don't have an account? Sign up{" "}
+                Don't have an account?{" "}
                 <Link to="/signup" className=" underline text-gray-500">
                   Sign up
                 </Link>
               </p>
-
               <p className=" text-center text-red-500  pl-1 absolute top-32 left-0 right-0">
                 {errors.root?.message}
               </p>

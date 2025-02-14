@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import Logo from "@/assets/images/Logo.png";
 
 // Schema validation using Zod
 const schema = z.object({
@@ -75,7 +76,15 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex justify-center h-screen w-full items-center">
+    <div className="flex justify-center flex-col h-screen w-full items-center">
+      <Link
+        to="/"
+        className="flex items-center gap-2 font-semibold  top-10 left-10 pb-10"
+      >
+        <img src={Logo} className="h-10 w-10" />
+
+        <span className="text-2xl font-bold ">AgriConnect</span>
+      </Link>
       <div className="px-8 py-16">
         <h1 className="text-2xl font-bold text-center mb-5">Signup</h1>
 
