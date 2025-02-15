@@ -130,7 +130,7 @@ export default function LoginForm() {
                 {isSubmitting ? <Lorder /> : "Submit"}{" "}
                 {/* Show loader or text */}
               </Button>
-              {/* Display form-level error message */}q
+              {/* Display form-level error message */}
               <p className="text-center block mt-5">
                 Don't have an account?{" "}
                 <Link to="/signup" className=" underline text-gray-500">
