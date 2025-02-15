@@ -2,8 +2,22 @@ import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import Logo from "@/assets/images/Logo.png";
 import { ModeToggle } from "./mode-toggle";
+import { useAuth } from "@/hooks/useAuth";
+import { CircleUser, Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+interface ChildProps {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function Header() {
+const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinks = [
     {
@@ -11,24 +25,35 @@ export default function Header() {
       path: "/",
     },
     {
-      title: "About Us",
-      path: "/about",
+      title: "Education",
+      path: "/education",
     },
     {
-      title: "Services",
-      path: "/services",
+      title: "Lands",
+      path: "/lands",
     },
     {
-      title: "Contact Us",
-      path: "/contact",
+      title: "Jobs",
+      path: "/jobs",
+    },
+    {
+      title: "Education",
+      path: "/education",
+    },
+    {
+      title: "Community",
+      path: "/community",
     },
   ];
+
+  const { authState } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
+
   return (
-    <header className=" fixed  w-full flex justify-between items-center py-5  px-5 z-30  transition-all border-b  border-color-border ">
+    <header className=" fixed  w-full flex justify-between items-center py-5  px-5 z-30  transition-all border-b   ">
       <Link to="/" className="flex items-center gap-1  duration-300">
         <img src={Logo} alt="Logo" />
         <span className="font-bold text-2xl pl-1 text-primary">
@@ -57,34 +82,57 @@ export default function Header() {
           </li>
         ))}
         <Link
-          to="/myBooking"
+          to="/signup"
           className="text-primary  px-8 py-2   hover:bg-primary-dark transition-all rounded-lg block lg:hidden   absolute left-5 right-5 bottom-[205px] text-center border-2 border-primary hover:border-gray-500"
           onClick={toggleMenu}
         >
-          My Booking
+          Sign up
         </Link>
         <Link
-          to="/booking"
+          to="/login"
           className="bg-primary text-white px-8 py-2   hover:bg-primary-dark transition-all rounded-lg block lg:hidden   absolute left-5 right-5 bottom-40 text-center"
           onClick={toggleMenu}
         >
-          Book Now
+          Login
         </Link>
       </ul>
       <div className="flex items-center  font-semibold gap-5 ">
-        <Link
-          to="/myBooking"
-          className=" text-primary px-8 py-[6px]  hover:text-gray-500 transition-all rounded-lg hidden lg:block  border-2 border-primary hover:border-gray-500"
-        >
-          My Booking
-        </Link>
-
-        <Link
-          to="/booking"
-          className="bg-primary text-white px-8 py-2  hover:bg-primary-dark transition-all rounded-lg hidden lg:block"
-        >
-          Doctor Appointment
-        </Link>
+        {!authState && (
+          <Link
+            to="/signup"
+            className=" text-primary px-8 py-[6px]  hover:text-gray-500 transition-all rounded-lg hidden lg:block  border-2 border-primary hover:border-gray-500"
+          >
+            Sign up
+          </Link>
+        )}
+        {!authState && (
+          <Link
+            to="/login"
+            className="bg-primary text-white px-8 py-2  hover:bg-primary-dark transition-all rounded-lg hidden lg:block"
+          >
+            Login
+          </Link>
+        )}
+        {authState && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" size="icon" className="rounded-full">
+                <CircleUser className="h-5 w-5" />
+                <span className="sr-only">Toggle user menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setIsOpen(true)}>
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         <ModeToggle />
       </div>
@@ -94,4 +142,5 @@ export default function Header() {
       </button>
     </header>
   );
-}
+};
+export default Header;
