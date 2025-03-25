@@ -3,7 +3,7 @@ import { useState } from "react";
 import Logo from "@/assets/images/Logo.png";
 import { ModeToggle } from "./mode-toggle";
 import { useAuth } from "@/hooks/useAuth";
-import { CircleUser, Menu } from "lucide-react";
+import { CircleUser, Menu, X } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+
 interface ChildProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -20,30 +21,11 @@ interface ChildProps {
 const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinks = [
-    {
-      title: "Home",
-      path: "/",
-    },
-    {
-      title: "Education",
-      path: "/education",
-    },
-    {
-      title: "Lands",
-      path: "/lands",
-    },
-    {
-      title: "Jobs",
-      path: "/jobs",
-    },
-    {
-      title: "Education",
-      path: "/education",
-    },
-    {
-      title: "Community",
-      path: "/community",
-    },
+    { title: "Home", path: "/" },
+    { title: "Education", path: "/education" },
+    { title: "Lands", path: "/lands" },
+    { title: "Jobs", path: "/jobs" },
+    { title: "Community", path: "/community" },
   ];
 
   const { authState } = useAuth();
@@ -53,27 +35,53 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   };
 
   return (
-    <header className=" fixed  w-full flex justify-between items-center py-5  px-5 z-30  transition-all border-b   ">
-      <Link to="/" className="flex items-center gap-1  duration-300">
-        <img src={Logo} alt="Logo" />
-        <span className="font-bold text-2xl pl-1 text-primary">
+    <header className="fixed w-full flex justify-between items-center py-4 px-4 md:px-6 z-30 transition-all border-b bg-white dark:bg-black">
+      {/* Logo Section */}
+      <Link to="/" className="flex items-center gap-2 duration-300">
+        <img src={Logo} alt="Logo" className="h-8 w-8" />
+        <span className="font-bold text-xl md:text-2xl text-primary">
           AgriConnect
         </span>
       </Link>
 
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-black/50 z-40 ${
+          isMenuOpen ? "block" : "hidden"
+        } lg:hidden`}
+        onClick={toggleMenu}
+      />
+
+      {/* Navigation Menu */}
       <ul
-        className={`flex lg:flex-row flex-col gap-5  absolute duration-200  lg:items-center ${
-          isMenuOpen ? "top-[92px]" : "top-[-1500px]"
-        } left-0 w-full h-screen lg:h-auto lg:static lg:w-auto lg:bg-transparent py-5 lg:py-0 pl-5 lg:pl-0`}
+        className={`
+          fixed top-0 left-0 w-64 h-full bg-white dark:bg-black 
+          transform transition-transform duration-300 ease-in-out z-50
+          ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:static lg:translate-x-0 lg:flex lg:w-auto lg:h-auto lg:bg-transparent
+          flex flex-col lg:flex-row gap-4 p-6 lg:p-0
+        `}
       >
+        <div className="flex justify-between items-center lg:hidden mb-6">
+          <Link to="/" className="flex items-center gap-2">
+            <img src={Logo} alt="Logo" className="h-8 w-8" />
+            <span className="font-bold text-xl text-primary">AgriConnect</span>
+          </Link>
+          <button onClick={toggleMenu} className="text-gray-600">
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+
         {navLinks.map((navLink, index) => (
-          <li key={index}>
+          <li key={index} className="w-full lg:w-auto">
             <NavLink
               to={navLink.path}
               className={({ isActive }) =>
-                isActive
-                  ? "text-primary font-semibold transition-all underline underline-offset-8 "
-                  : "text-muted-foreground hover:text-primary transition-all "
+                `block w-full lg:w-auto py-2 lg:py-0 ${
+                  isActive
+                    ? "text-primary font-semibold underline underline-offset-8"
+                    : "text-muted-foreground hover:text-primary"
+                } transition-all`
               }
               onClick={toggleMenu}
             >
@@ -81,38 +89,49 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
             </NavLink>
           </li>
         ))}
-        <Link
-          to="/signup"
-          className="text-primary  px-8 py-2   hover:bg-primary-dark transition-all rounded-lg block lg:hidden   absolute left-5 right-5 bottom-[205px] text-center border-2 border-primary hover:border-gray-500"
-          onClick={toggleMenu}
-        >
-          Sign up
-        </Link>
-        <Link
-          to="/login"
-          className="bg-primary text-white px-8 py-2   hover:bg-primary-dark transition-all rounded-lg block lg:hidden   absolute left-5 right-5 bottom-40 text-center"
-          onClick={toggleMenu}
-        >
-          Login
-        </Link>
+
+        {/* Mobile Auth Buttons */}
+        {!authState && (
+          <div className="mt-auto lg:hidden space-y-4">
+            <Link
+              to="/signup"
+              className="block w-full text-center text-primary border-2 border-primary hover:border-gray-500 py-2 rounded-lg"
+              onClick={toggleMenu}
+            >
+              Sign up
+            </Link>
+            <Link
+              to="/login"
+              className="block w-full text-center bg-primary text-white py-2 rounded-lg hover:bg-primary-dark"
+              onClick={toggleMenu}
+            >
+              Login
+            </Link>
+          </div>
+        )}
       </ul>
-      <div className="flex items-center  font-semibold gap-5 ">
+
+      {/* Desktop Auth and Theme Toggle */}
+      <div className="flex items-center font-semibold gap-4">
+        {/* Auth Buttons for Desktop */}
         {!authState && (
-          <Link
-            to="/signup"
-            className=" text-primary px-8 py-[6px]  hover:text-gray-500 transition-all rounded-lg hidden lg:block  border-2 border-primary hover:border-gray-500"
-          >
-            Sign up
-          </Link>
+          <div className="hidden lg:flex items-center gap-4">
+            <Link
+              to="/signup"
+              className="text-primary px-6 py-2 border-2 border-primary hover:border-gray-500 rounded-lg"
+            >
+              Sign up
+            </Link>
+            <Link
+              to="/login"
+              className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark"
+            >
+              Login
+            </Link>
+          </div>
         )}
-        {!authState && (
-          <Link
-            to="/login"
-            className="bg-primary text-white px-8 py-2  hover:bg-primary-dark transition-all rounded-lg hidden lg:block"
-          >
-            Login
-          </Link>
-        )}
+
+        {/* User Dropdown for Authenticated Users */}
         {authState && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -134,13 +153,21 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
           </DropdownMenu>
         )}
 
-        <ModeToggle />
+        {/* Theme Toggle for Desktop */}
+        <div className="hidden lg:block">
+          <ModeToggle />
+        </div>
       </div>
 
-      <button className="lg:hidden" onClick={toggleMenu}>
-        {/* <ion-icon name={isMenuOpen ? "close" : "menu"}></ion-icon> */}
-      </button>
+      {/* Mobile Menu and Theme Toggle Buttons */}
+      <div className="lg:hidden flex items-center gap-4">
+        <button onClick={toggleMenu} className="lg:hidden">
+          <Menu className="h-6 w-6" />
+        </button>
+        <ModeToggle />
+      </div>
     </header>
   );
 };
+
 export default Header;

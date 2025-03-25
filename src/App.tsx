@@ -8,7 +8,7 @@ import LoginPage from "@/pages/Auth/LoginPage";
 import SignupPage from "@/pages/Auth/SignupPage";
 import NotFoundPage from "@/pages/Auth/NotFoundPage";
 import { useAuth } from "@/hooks/useAuth";
-
+import EducationPage from "@/pages/Education/EducationPage";
 import DashboardPage from "@/pages/Dashboard/DashboardPage";
 import AdminPage from "@/pages/Admin/AdminPage";
 import DentistPage from "@/pages/Dentist/DentistPage";
@@ -52,7 +52,16 @@ export default function App() {
           }
         >
           <Route index element={<DashboardPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+
+          <Route path="/education" element={<EducationPage />} />
+          {/* <Route path="/lands" element={<LandsPage />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/community" element={<CommunityPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/courses" element={<CoursePage />} /> */}
+
+          <Route path="/" element={<AdminPage />} />
           <Route path="/dentist" element={<DentistPage />} />
         </Route>
 

@@ -10,7 +10,7 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/images/Logo.png";
-
+import axiosInstance from "@/api/axiosInstance";
 // Schema validation using Zod
 const schema = z.object({
   username: z
@@ -55,7 +55,7 @@ export default function SignupPage() {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       // Send a POST request to the signup API endpoint
-      await axios.post("http://localhost:8080/api/auth/signup", {
+      await axiosInstance.post("/users/signup", {
         username: data.username,
         email: data.email,
 

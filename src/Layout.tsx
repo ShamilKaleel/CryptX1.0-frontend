@@ -46,7 +46,7 @@ export default function Layout() {
       )}
       <ScrollToTop />
       <Header setIsOpen={setIsOpen} />
-      <div className="mt-[120px] xl:mt-[150px] px-5">
+      <div className="mt-[120px] xl:mt-[68px]">
         <Outlet />
       </div>
 
